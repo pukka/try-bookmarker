@@ -10,6 +10,11 @@ use App\Controller\AppController;
  */
 class UsersController extends AppController
 {
+    /** 共通コード */
+    public function beforeFilter(\Cake\Event\Event $event)
+    {
+        $this->Auth->allow(['add']);
+    }
 
     /**
      * Index method
@@ -101,5 +106,23 @@ class UsersController extends AppController
             $this->Flash->error('The user could not be deleted. Please, try again.');
         }
         return $this->redirect(['action' => 'index']);
+    }
+    /** 認証機能 */
+    public function login()
+    {
+        if ($this->request->is('post')) {
+            $user = $this->Auth->identify();
+            if ($user) {
+                $this->Auth->setUser($user);
+                return $this->redirect($this->Auth->redirectUrl());
+            }
+            $this->Flash->error('ユーザ名かパスワードが間違っています。');
+        }
+    }
+    /** ログアウト */
+    public function logout()
+    {
+        $this->Flash->success('ログアウトしました。');
+        return $this->redirect($this->Auth->logout());
     }
 }

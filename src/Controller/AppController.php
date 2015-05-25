@@ -36,7 +36,23 @@ class AppController extends Controller
      */
     public function initialize()
     {
-        parent::initialize();
+        // アプリケーション全体への認証機能
         $this->loadComponent('Flash');
+        $this->loadComponent('Auth',[
+            'authenticate' => [
+                'Form' => [
+                    'fields' => [
+                        'username' => 'email',
+                        'password' => 'password'
+                     ]
+                 ]
+             ],
+             'loginAction' => [
+                 'controller' => 'Users',
+                 'action' => 'login'
+             ]
+        ]);
+
+        $this->Auth->allow(['display']);
     }
 }
