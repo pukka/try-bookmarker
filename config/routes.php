@@ -41,6 +41,15 @@ use Cake\Routing\Router;
  */
 Router::defaultRouteClass('Route');
 
+/** URLを使った、タグ付けブックマーク検索 */
+Router::scope(
+    '/bookmarks',
+        ['controller' => 'Bookmarks'],
+        function ($routes) {
+            $routes->connect('/tagged/*', ['action' => 'tags']);
+        }
+);
+
 Router::scope('/', function ($routes) {
     /**
      * Here, we are connecting '/' (base path) to a controller called 'Pages',
